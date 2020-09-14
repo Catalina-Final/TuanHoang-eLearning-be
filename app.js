@@ -20,6 +20,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 /* DB Connections */
+mongoose.plugin(require("./src/models/plugins/modifiedAt"));
+
 mongoose
   .connect(mongoURI, {
     // some options to deal with deprecated warning
@@ -28,7 +30,10 @@ mongoose
     useFindAndModify: false,
     useUnifiedTopology: true,
   })
-  .then(() => console.log(`Mongoose connected to ${mongoURI}`))
+  .then(() => {
+    console.log(`Mongoose connected to ${mongoURI}`);
+    require("./src/testing/testSchema");
+  })
   .catch((err) => console.log(err));
 
 app.use(express.static(path.join(__dirname, "public")));
@@ -57,5 +62,7 @@ app.use((err, req, res, next) => {
     return utilsHelper.sendResponse(res, 500, false, null, err, null, null);
   }
 });
+
+//testschema
 
 module.exports = app;
