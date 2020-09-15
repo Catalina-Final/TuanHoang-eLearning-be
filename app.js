@@ -38,8 +38,8 @@ mongoose
 
 app.use(express.static(path.join(__dirname, "public")));
 
-//check overall status of sever
-app.use("/", indexRouter);
+// //check overall status of sever
+// app.use("/", indexRouter);
 
 //actual api endpoints
 
@@ -48,18 +48,32 @@ app.use("/api", indexRouter);
 
 // catch 404 and forard to error handler
 app.use((req, res, next) => {
-  const err = new Error("Not Found");
+  const err = new Error("url Not Found");
   err.statusCode = 404;
   next(err);
 });
 
 /* Initialize Error Handling */
 app.use((err, req, res, next) => {
-  if (err.statusCode === 404) {
-    return utilsHelper.sendResponse(res, 404, false, null, err, null, null);
+  console.log("ERROR", err);
+  if (err.isOperational) {
+    return utilsHelper.sendResponse(
+      res,
+      err.statusCode ? err.statusCode : 500,
+      false,
+      null,
+      { message: err.message },
+      err.errorType
+    );
   } else {
-    console.log("ERROR", err.message);
-    return utilsHelper.sendResponse(res, 500, false, null, err, null, null);
+    return utilsHelper.sendResponse(
+      res,
+      err.statusCode ? err.statusCode : 500,
+      false,
+      null,
+      { message: err.message },
+      "Internal Server Error"
+    );
   }
 });
 

@@ -7,6 +7,7 @@ const submissionSchema = Schema({
   course: { type: Schema.Types.ObjectId, require: true, ref: "Course" },
   content: { type: String, require: true },
   score: { type: Number },
+  isDeleted: { type: Boolean, default: false },
 });
 submissionSchema.plugin(require("./plugins/isDeletedFalse"));
 

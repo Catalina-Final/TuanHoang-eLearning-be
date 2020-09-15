@@ -2,10 +2,14 @@
 Status : In-development
 
 Next on list:
-Set up routes
-Authentication
+
+Authentication with 3rd party
+Verify Email
+Login required functions for user
 
 Current:
+
+Matain login - authentication middleware
 
 Done:
 Set-up express
@@ -16,3 +20,5 @@ User,Teacher,Student Schema
 Course, Unit, Submission Schema
 Testing Schema OK
 add plugins Created at, isDeletedFalse
+login with emails (not verify email)
+register new user
