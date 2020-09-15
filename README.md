@@ -1,6 +1,7 @@
 "# TuanHoang-eLearning-be"
 Status : In-development
 
+=>Branch : Mantain
 Next on list:
 
 Authentication with 3rd party
@@ -8,8 +9,6 @@ Verify Email
 Login required functions for user
 
 Current:
-
-Matain login - authentication middleware
 
 Done:
 Set-up express
@@ -22,3 +21,5 @@ Testing Schema OK
 add plugins Created at, isDeletedFalse
 login with emails (not verify email)
 register new user
+Matain login - authentication middleware
+create new course

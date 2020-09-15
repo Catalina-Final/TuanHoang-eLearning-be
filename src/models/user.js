@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const jwtkey = require("jsonwebtoken");
-const JWT_SECRECT_KEY = process.env.JWT_SECRECT_KEY;
+const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 
 //User Schema
 const userSchema = Schema(
@@ -10,7 +10,11 @@ const userSchema = Schema(
     email: { type: String, require: true },
     password: { type: String, require: true },
     avatar: { type: String },
-    //role
+    role: {
+      type: String,
+      enum: ["teacher", "student", "admin"],
+      default: "student",
+    },
     isDeleted: { type: Boolean, default: false },
   },
   { timestamps: true }
@@ -18,7 +22,7 @@ const userSchema = Schema(
 userSchema.plugin(require("./plugins/isDeletedFalse"));
 
 userSchema.methods.generateToken = async function () {
-  const accessToken = await jwtkey.sign({ _id: this._id }, JWT_SECRECT_KEY, {
+  const accessToken = await jwtkey.sign({ _id: this._id }, JWT_SECRET_KEY, {
     expiresIn: "1d",
   });
   return accessToken;

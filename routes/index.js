@@ -15,4 +15,8 @@ router.use("/auth", authApi);
 const userApi = require("./user.api");
 router.use("/user", userApi);
 
+//courseApi
+const courseApi = require("./course.api");
+router.use("/course", courseApi);
+
 module.exports = router;

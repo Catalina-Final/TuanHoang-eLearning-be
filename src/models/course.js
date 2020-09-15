@@ -5,9 +5,9 @@ const courseSchema = Schema(
     title: { type: String, required: true },
     image: { type: String },
     description: { type: String, required: true },
-    units: [{ type: Schema.Types.ObjectId, required: true, ref: "Unit" }],
+    units: [{ type: Schema.Types.ObjectId, ref: "Unit" }],
     students: [{ type: Schema.Types.ObjectId, ref: "Student" }],
-    teachers: [{ type: Schema.Types.ObjectId, required: true, ref: "Teacher" }],
+    teachers: [{ type: Schema.Types.ObjectId, ref: "Teacher" }],
     isDeleted: { type: Boolean, default: false },
   },
   {}
