@@ -10,8 +10,6 @@ Login required functions for user
 
 Current:
 
-Matain login - authentication middleware
-
 Done:
 Set-up express
 Connect Mongo Sever
@@ -23,3 +21,5 @@ Testing Schema OK
 add plugins Created at, isDeletedFalse
 login with emails (not verify email)
 register new user
+Matain login - authentication middleware
+create new course
