@@ -5,14 +5,11 @@ Status : In-development
 Next on list:
 
 Authentication with 3rd party
-Verify Email
-Login required functions for user
 
 create new unit
 
-add unit to course
-
 Current:
+delete course
 
 Done:
 Set-up express
@@ -26,10 +23,10 @@ add plugins Created at, isDeletedFalse
 login with emails (not verify email)
 register new user
 Matain login - authentication middleware
-
 create new course
 get all course
 get single course
+Update
 
 Guest :
 see all courses , title, description, image, total unit
