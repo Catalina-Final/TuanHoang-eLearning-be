@@ -16,6 +16,7 @@ const userSchema = Schema(
       default: "student",
     },
     isDeleted: { type: Boolean, default: false },
+    // emailVerified: { type: Boolean, default: true },
   },
   { timestamps: true }
 );

@@ -8,6 +8,10 @@ Authentication with 3rd party
 Verify Email
 Login required functions for user
 
+create new unit
+
+add unit to course
+
 Current:
 
 Done:
@@ -22,4 +26,13 @@ add plugins Created at, isDeletedFalse
 login with emails (not verify email)
 register new user
 Matain login - authentication middleware
+
 create new course
+get all course
+get single course
+
+Guest :
+see all courses , title, description, image, total unit
+
+Student
+see unit detail, submission link, grade

@@ -2,17 +2,63 @@ const express = require("express");
 const router = express.Router();
 const courseController = require("../controllers/course.controller");
 const authMiddleware = require("../middlewares/authentication");
-const { body } = require("express-validator");
-// const authMiddleware = require("../middlewares/authentication");
+const { body, param } = require("express-validator");
+const validators = require("../middlewares/validators");
 
 //NO LOGIN REQUIRED
-
-//LOGIN REQUIRED
 /**
- * @route POST api/course
- * @description Register new user
+ * @route GET api/courses?page=1&limit=10
+ * @description Get blogs with pagination
  * @access Public
  */
+
+router.get("/", courseController.getAllCourses);
+
+/**
+ * @route GET api/courses?page=1&limit=10
+ * @description Get blogs with pagination
+ * @access Public
+ */
+
+router.get("/", courseController.getAllCourses);
+
+/**
+ * @route GET api/course/:id
+ * @description Get a single blog
+ * @access Public
+ */
+router.get(
+  "/:id",
+  validators.validate([
+    param("id").exists().isString().custom(validators.checkObjectId),
+  ]),
+  courseController.getSingleCourse
+);
+
+//LOGIN REQUIRED
+
+/**
+ * @route POST api/course
+ * @description create new course
+ * @access Login required
+ */
 router.post("/", authMiddleware.loginRequired, courseController.createNew);
+
+/**
+ * @route PUT api/course/:id
+ * @description Update a course
+ * @access Login required
+ */
+router.put(
+  "/:id",
+  authMiddleware.loginRequired,
+  validators.validate([
+    param("id").exists().isString().custom(validators.checkObjectId),
+    body("title", "Missing title").exists().notEmpty(),
+    body("description", "Missing description").exists().notEmpty(),
+    body("image", "Missing image").exists().notEmpty(),
+  ]),
+  courseController.updateSingleCourse
+);
 
 module.exports = router;
