@@ -20,7 +20,7 @@ const courseApi = require("./course.api");
 router.use("/course", courseApi);
 
 //unitApi
-// const unitApi = require("./unit.api");
-// router.use("/unit");
+const unitApi = require("./unit.api");
+router.use("/unit", unitApi);
 
 module.exports = router;

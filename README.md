@@ -6,9 +6,8 @@ Next on list:
 Changing course need actual author to be login
 Authentication with 3rd party
 
-create new unit
-
 Current:
+CRUD for unit
 
 Done:
 Set-up express
@@ -27,3 +26,6 @@ get all course
 get single course
 Edit course
 delete course
+
+//not to frontend
+to create unit have to send data as format => title string, object content that have object instruction, and video string
