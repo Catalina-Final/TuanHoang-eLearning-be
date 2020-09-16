@@ -3,13 +3,12 @@ Status : In-development
 
 =>Branch : Mantain
 Next on list:
-
+Changing course need actual author to be login
 Authentication with 3rd party
 
 create new unit
 
 Current:
-delete course
 
 Done:
 Set-up express
@@ -21,15 +20,10 @@ Course, Unit, Submission Schema
 Testing Schema OK
 add plugins Created at, isDeletedFalse
 login with emails (not verify email)
-register new user
+register new use
 Matain login - authentication middleware
 create new course
 get all course
 get single course
-Update
-
-Guest :
-see all courses , title, description, image, total unit
-
-Student
-see unit detail, submission link, grade
+Edit course
+delete course

@@ -61,4 +61,18 @@ router.put(
   courseController.updateSingleCourse
 );
 
+/**
+ * @route DELETE api/course/:id
+ * @description Delete a blog
+ * @access login required
+ */
+router.delete(
+  "/:id",
+  authMiddleware.loginRequired,
+  validators.validate([
+    param("id").exists().isString().custom(validators.checkObjectId),
+  ]),
+  courseController.deleteSingleCourse
+);
+
 module.exports = router;

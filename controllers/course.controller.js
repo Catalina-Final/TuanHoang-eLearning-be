@@ -76,11 +76,11 @@ courseController.getSingleCourse = catchAsync(async (req, res, next) => {
 courseController.updateSingleCourse = catchAsync(async (req, res, next) => {
   // const author = req.userId;
 
-  const blogId = req.params.id;
+  const courseId = req.params.id;
   const { title, description, image } = req.body;
 
   const course = await Course.findOneAndUpdate(
-    { _id: blogId },
+    { _id: courseId },
     { title, description, image },
     { new: true }
   );
@@ -89,9 +89,35 @@ courseController.updateSingleCourse = catchAsync(async (req, res, next) => {
       new AppError(
         400,
         "Course not found or User not authorized",
-        "Update Blog Error"
+        "Update course Error"
       )
     );
-  return sendResponse(res, 200, true, course, null, "Update Blog successful");
+  return sendResponse(res, 200, true, course, null, "Update course successful");
+});
+
+//Delete single
+courseController.deleteSingleCourse = catchAsync(async (req, res, next) => {
+  const courseId = req.params.id;
+  const course = await Course.findOneAndUpdate(
+    { _id: courseId },
+    { isDeleted: true },
+    { new: true }
+  );
+  if (!course)
+    return next(
+      new AppError(
+        400,
+        "Course not found or User not authorized",
+        "Delete course success"
+      )
+    );
+  return sendResponse(
+    res,
+    200,
+    true,
+    null,
+    null,
+    `Delete course ${course.title} successful`
+  );
 });
 module.exports = courseController;
