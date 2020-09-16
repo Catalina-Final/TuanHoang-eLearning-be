@@ -3,7 +3,7 @@ require("dotenv").config;
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 const { AppError } = require("../src/helpers/utils.helper");
 const authMiddleware = {};
-console.log("=======================", JWT_SECRET_KEY);
+// console.log("=======================", JWT_SECRET_KEY);
 authMiddleware.loginRequired = (req, res, next) => {
   try {
     const tokenString = req.headers.authorization;

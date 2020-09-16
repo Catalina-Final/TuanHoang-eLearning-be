@@ -6,17 +6,10 @@ const { body, param } = require("express-validator");
 const validators = require("../middlewares/validators");
 
 //NO LOGIN REQUIRED
-/**
- * @route GET api/courses?page=1&limit=10
- * @description Get blogs with pagination
- * @access Public
- */
-
-router.get("/", courseController.getAllCourses);
 
 /**
  * @route GET api/courses?page=1&limit=10
- * @description Get blogs with pagination
+ * @description Get courses with pagination
  * @access Public
  */
 
@@ -24,7 +17,7 @@ router.get("/", courseController.getAllCourses);
 
 /**
  * @route GET api/course/:id
- * @description Get a single blog
+ * @description Get a single course
  * @access Public
  */
 router.get(
@@ -63,7 +56,7 @@ router.put(
 
 /**
  * @route DELETE api/course/:id
- * @description Delete a blog
+ * @description Delete a course
  * @access login required
  */
 router.delete(
