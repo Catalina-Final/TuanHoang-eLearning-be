@@ -10,7 +10,7 @@ const courseSchema = Schema(
     teachers: [{ type: Schema.Types.ObjectId, ref: "Teacher" }],
     isDeleted: { type: Boolean, default: false },
   },
-  {}
+  { timestamps: true }
 );
 courseSchema.plugin(require("./plugins/isDeletedFalse"));
 
