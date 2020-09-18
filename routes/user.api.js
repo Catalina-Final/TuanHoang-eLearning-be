@@ -22,5 +22,11 @@ router.post(
 );
 
 //LOGIN REQUIRED
+/**
+ * @route get api/users/me
+ * @description current user
+ * @access login required
+ */
+router.get("/", userController.getCurrentUser);
 
 module.exports = router;

@@ -49,4 +49,17 @@ userController.register = catchAsync(async (req, res, next) => {
     "Create user successful"
   );
 });
+userController.getCurrentUser = catchAsync(async (req, res, next) => {
+  const userId = req.userId;
+  const user = await User.findById(userId);
+  return sendResponse(
+    res,
+    200,
+    true,
+    user,
+    null,
+    "Get current user successful"
+  );
+});
+
 module.exports = userController;
