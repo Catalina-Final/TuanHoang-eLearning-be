@@ -3,6 +3,7 @@ const router = express.Router();
 const userController = require("../controllers/user.controller");
 const validators = require("../middlewares/validators");
 const { body } = require("express-validator");
+const authMiddleware = require("../middlewares/authentication");
 // const authMiddleware = require("../middlewares/authentication");
 
 //NO LOGIN REQUIRED
@@ -27,6 +28,6 @@ router.post(
  * @description current user
  * @access login required
  */
-router.get("/", userController.getCurrentUser);
+router.get("/me", authMiddleware.loginRequired, userController.getCurrentUser);
 
 module.exports = router;
