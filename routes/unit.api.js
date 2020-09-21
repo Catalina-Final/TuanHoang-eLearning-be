@@ -16,7 +16,7 @@ router.post("/", authMiddleware.loginRequired, unitController.createNew);
 
 /**
  * @route GET api/units?page=1&limit=10
- * @description Get blogs with pagination
+ * @description Get units with pagination
  * @access login required
  */
 

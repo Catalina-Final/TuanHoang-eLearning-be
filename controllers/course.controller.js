@@ -11,20 +11,19 @@ const courseController = {};
 //Create
 courseController.createNew = catchAsync(async (req, res, next) => {
   //   const author = req.userId;
-  const { title, description } = req.body;
+  const { title, description, units } = req.body;
   let { image } = req.body;
   // if (req.files) {
   //   images = req.files.map((file) => {
   //     return file.path.split("public")[1].split("\\").join("/");
   //   });
   // }
-
   const course = await Course.create({
     title,
-    description,
+    units,
     image,
+    description,
   });
-
   return sendResponse(
     res,
     200,
