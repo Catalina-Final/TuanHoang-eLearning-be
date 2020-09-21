@@ -4,6 +4,7 @@ const {
   sendResponse,
 } = require("../src/helpers/utils.helper");
 const Course = require("../src/models/course");
+const Enrollment = require("../src/models/enrollment");
 
 const courseController = {};
 
@@ -118,6 +119,71 @@ courseController.deleteSingleCourse = catchAsync(async (req, res, next) => {
     null,
     null,
     `Delete course ${course.title} successful`
+  );
+});
+
+courseController.enrollCourse = catchAsync(async (req, res, next) => {
+  const courseId = req.params.id;
+  const userId = req.userId;
+
+  let enrollment = await Enrollment.findOne({
+    student: userId,
+    course: courseId,
+  });
+  if (!enrollment) {
+    enrollment = await Enrollment.create({
+      student: userId,
+      course: courseId,
+      status: "enroll",
+    });
+  } else {
+    if (enrollment.status !== "graduated" && enrollment.status !== "enroll") {
+      enrollment = await Enrollment.findByIdAndUpdate(
+        enrollment._id,
+        { $set: { status: "enroll" } },
+        { new: true }
+      );
+    }
+  }
+  if (!enrollment)
+    return next(
+      new AppError(
+        400,
+        "Cannot create/update enrollment",
+        "Enroll Course Error"
+      )
+    );
+  return sendResponse(
+    res,
+    200,
+    true,
+    null,
+    null,
+    "Student enrolls the course successful"
+  );
+});
+
+courseController.getEnrollment = catchAsync(async (req, res, next) => {
+  const courseId = req.params.id;
+  const userId = req.userId;
+
+  let enrollment = await Enrollment.findOne({
+    student: userId,
+    course: courseId,
+  });
+  // Enrollment.findOneAndUpdate({ student: userId, course: courseId });
+
+  if (!enrollment)
+    return next(
+      new AppError(400, "Enrollment not found", "Get Enrollment Error")
+    );
+  return sendResponse(
+    res,
+    200,
+    true,
+    enrollment,
+    null,
+    "Get enrollment successful"
   );
 });
 module.exports = courseController;
