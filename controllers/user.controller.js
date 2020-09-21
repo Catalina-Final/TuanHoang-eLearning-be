@@ -56,7 +56,7 @@ userController.getCurrentUser = catchAsync(async (req, res, next) => {
     res,
     200,
     true,
-    user,
+    { user },
     null,
     "Get current user successful"
   );

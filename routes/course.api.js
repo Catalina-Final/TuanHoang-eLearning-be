@@ -55,6 +55,34 @@ router.put(
 );
 
 /**
+ * @route POST api/course/:id/enroll
+ * @description user enroll a course as a student
+ * @access Login required
+ */
+router.post(
+  "/:id/enroll",
+  authMiddleware.loginRequired,
+  validators.validate([
+    param("id").exists().isString().custom(validators.checkObjectId),
+  ]),
+  courseController.enrollCourse
+);
+
+/**
+ * @route GET api/course/:id/enroll
+ * @description Get relationship between user and course
+ * @access Login required
+ */
+router.get(
+  "/:id/enroll",
+  authMiddleware.loginRequired,
+  validators.validate([
+    param("id").exists().isString().custom(validators.checkObjectId),
+  ]),
+  courseController.getEnrollment
+);
+
+/**
  * @route DELETE api/course/:id
  * @description Delete a course
  * @access login required

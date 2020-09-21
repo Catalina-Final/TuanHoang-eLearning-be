@@ -9,6 +9,7 @@ const courseSchema = Schema(
     students: [{ type: Schema.Types.ObjectId, ref: "Student" }],
     teachers: [{ type: Schema.Types.ObjectId, ref: "Teacher" }],
     isDeleted: { type: Boolean, default: false },
+    enrollmentCount: { type: Number, default: 0 },
   },
   { timestamps: true }
 );
