@@ -174,9 +174,7 @@ courseController.getEnrollment = catchAsync(async (req, res, next) => {
   // Enrollment.findOneAndUpdate({ student: userId, course: courseId });
 
   if (!enrollment)
-    return next(
-      new AppError(400, "Enrollment not found", "Get Enrollment Error")
-    );
+    return sendResponse(res, 200, true, null, null, "Enrollment not found");
   return sendResponse(
     res,
     200,
