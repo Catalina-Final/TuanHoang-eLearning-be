@@ -2,8 +2,9 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const courseSchema = Schema(
   {
-    title: { type: String, required: true },
+    title: { type: String, required: true, unique: true },
     image: { type: String },
+    price: { type: Number, required: true },
     description: { type: String, required: true },
     units: [
       Schema({

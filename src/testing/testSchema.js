@@ -1,12 +1,9 @@
 const mongoose = require("mongoose");
 const faker = require("faker");
-const Course = require("../models/course");
 const Student = require("../models/student");
-const Submission = require("../models/submission");
-const Teacher = require("../models/teacher");
-const Unit = require("../models/unit");
-const User = require("../models/user");
 
+const Teacher = require("../models/teacher");
+const User = require("../models/user");
 /**
  * Returns a random integer between min (inclusive) and max (inclusive).
  * The value is no lower than min (or the next integer greater than min
@@ -63,59 +60,6 @@ const generateData = async () => {
         });
       }
     }
-
-    let units = [];
-    const unitNum = 10;
-    const randomIndex = getRandomInt(0, unitNum - 3); //studentindex and unit index equal number 10
-    console.log("| Create 10 units:");
-    for (let i = 0; i < unitNum; i++) {
-      await Unit.create({
-        title: faker.lorem.sentence(),
-        content: {
-          description: faker.lorem.sentence(),
-          instruction: {
-            header: faker.lorem.sentence(),
-            body: faker.lorem.paragraph(),
-            footer: faker.lorem.sentence(),
-          },
-          videos: faker.internet.email(),
-        },
-      }).then(function (unit) {
-        console.log("Created new unit: " + unit.title);
-        units.push(unit);
-      });
-    }
-    let courses = [];
-    console.log("| Create 1 course:");
-    await Course.create({
-      title: faker.lorem.sentence(),
-      description: faker.lorem.sentence(),
-      image: faker.lorem.sentence(),
-      units: [
-        units[randomIndex]._id,
-        units[randomIndex + 1]._id,
-        units[randomIndex + 2]._id,
-      ],
-      students: [
-        students[randomIndex]._id,
-        students[randomIndex + 1]._id,
-        students[randomIndex + 2]._id,
-      ],
-      teachers: [teachers[getRandomInt(0, teacherNum - 1)]._id],
-    }).then(async function (course) {
-      console.log("Created new course: " + course);
-      courses.push(course);
-      for (let i = 0; i < course.units.length; i++) {
-        for (let j = 0; j < course.students.length; j++) {
-          await Submission.create({
-            student: course.students[j]._id,
-            unit: course.units[i]._id,
-            course: course._id,
-            content: faker.lorem.sentence(),
-          });
-        }
-      }
-    });
   } catch (error) {
     console.log("error at generateData", error);
   }
