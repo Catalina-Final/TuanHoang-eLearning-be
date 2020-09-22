@@ -124,7 +124,6 @@ courseController.deleteSingleCourse = catchAsync(async (req, res, next) => {
 courseController.enrollCourse = catchAsync(async (req, res, next) => {
   const courseId = req.params.id;
   const userId = req.userId;
-
   let enrollment = await Enrollment.findOne({
     student: userId,
     course: courseId,
@@ -183,4 +182,7 @@ courseController.getEnrollment = catchAsync(async (req, res, next) => {
     "Get enrollment successful"
   );
 });
+
+
+
 module.exports = courseController;

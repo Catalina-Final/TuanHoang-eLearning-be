@@ -30,4 +30,14 @@ router.post(
  */
 router.get("/me", authMiddleware.loginRequired, userController.getCurrentUser);
 
+/**
+ * @route get api/users/courses
+ * @description enrolled courses
+ * @access login required
+ */
+router.get(
+  "/courses",
+  authMiddleware.loginRequired,
+  userController.getEnrollCourses
+);
 module.exports = router;

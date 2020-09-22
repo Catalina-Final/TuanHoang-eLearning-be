@@ -6,10 +6,11 @@ const {
 const User = require("../src/models/user");
 const bcrypt = require("bcryptjs");
 const utilsHelper = require("../src/helpers/utils.helper");
+const Enrollment = require("../src/models/enrollment");
 const userController = {};
 
 userController.register = catchAsync(async (req, res, next) => {
-  let { name, email, avatar, password } = req.body;
+  let { name, email, avatar, password, role } = req.body;
   let user = await User.findOne({ email });
   if (user)
     return next(new AppError(409, "User already exists", "Register Error"));
@@ -23,6 +24,7 @@ userController.register = catchAsync(async (req, res, next) => {
     email,
     password,
     avatar,
+    role,
     // emailVerificationCode,
     // emailVerified: false,
   });
@@ -61,5 +63,12 @@ userController.getCurrentUser = catchAsync(async (req, res, next) => {
     "Get current user successful"
   );
 });
+userController.getEnrollCourses = catchAsync(async (req, res, next) => {
+  let userId = req.userId;
 
+  let courses = await Enrollment.find({
+    student: userId,
+  }).populate("course");
+  return sendResponse(res, 200, true, courses, null, null);
+});
 module.exports = userController;
