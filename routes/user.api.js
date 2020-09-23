@@ -40,4 +40,11 @@ router.get(
   authMiddleware.loginRequired,
   userController.getEnrollCourses
 );
+/**
+ * @route get api/users/courses
+ * @description enrolled courses
+ * @access login required
+ */
+router.get("/", authMiddleware.loginRequired, userController.getAllUsers);
+
 module.exports = router;

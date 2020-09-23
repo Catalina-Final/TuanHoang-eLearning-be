@@ -67,6 +67,20 @@ router.post(
   ]),
   courseController.enrollCourse
 );
+/**
+ * @route POST api/course/:id/enroll
+ * @description user enroll a course as a student
+ * @access Login required
+ */
+router.post(
+  "/:courseId/teacher/:teacherId",
+  authMiddleware.loginRequired,
+  validators.validate([
+    param("courseId").exists().isString().custom(validators.checkObjectId),
+    param("teacherId").exists().isString().custom(validators.checkObjectId),
+  ]),
+  courseController.assignTeacher
+);
 
 /**
  * @route GET api/course/:id/enroll

@@ -5,6 +5,7 @@ const {
 } = require("../src/helpers/utils.helper");
 const Course = require("../src/models/course");
 const Enrollment = require("../src/models/enrollment");
+const Teaching = require("../src/models/teaching");
 
 const courseController = {};
 
@@ -39,7 +40,7 @@ courseController.createNew = catchAsync(async (req, res, next) => {
 courseController.getAllCourses = catchAsync(async (req, res, next) => {
   let { page, limit, sortBy, ...filter } = { ...req.query };
   page = parseInt(page) || 1;
-  limit = parseInt(limit) || 10;
+  limit = parseInt(limit) || 100;
 
   const totalCourses = await Course.countDocuments({
     ...filter,
@@ -50,14 +51,20 @@ courseController.getAllCourses = catchAsync(async (req, res, next) => {
     .sort({ ...sortBy, createdAt: -1 })
     .skip(offset)
     .limit(limit)
-    .populate("author");
+    .populate("teachers");
   return sendResponse(res, 200, true, { courses, totalPages }, null, "");
 });
 
 //Read single
 courseController.getSingleCourse = catchAsync(async (req, res, next) => {
-  // console.log("req", req.params.id);
-  let course = await Course.findById(req.params.id);
+  console.log("req", req.params.id);
+  let course = await Course.findById(req.params.id)
+    .populate("teachers")
+    .populate("students");
+  const teachers = await Teaching.find({ course: course._id }).populate(
+    "teacher"
+  );
+
   if (!course)
     return next(
       new AppError(
@@ -68,7 +75,7 @@ courseController.getSingleCourse = catchAsync(async (req, res, next) => {
     );
   course = course.toJSON();
 
-  return sendResponse(res, 200, true, course, null, null);
+  return sendResponse(res, 200, true, { course, teachers }, null, null);
 });
 
 //Update single
@@ -161,6 +168,38 @@ courseController.enrollCourse = catchAsync(async (req, res, next) => {
   );
 });
 
+courseController.assignTeacher = catchAsync(async (req, res, next) => {
+  const courseId = req.params.courseId;
+  const teacherId = req.params.teacherId;
+  console.log(courseId, teacherId);
+  let teaching = await Teaching.findOne({
+    teacher: teacherId,
+    course: courseId,
+  });
+
+  if (!teaching) {
+    teaching = await Teaching.create({
+      teacher: teacherId,
+      course: courseId,
+      status: "asigned",
+    });
+  } else {
+    teaching.status = teaching.status === "asigned" ? "unasigned" : "asigned";
+    await teaching.save();
+  }
+  const teachers = await Teaching.find({ course: courseId }).populate(
+    "teacher"
+  );
+  return sendResponse(
+    res,
+    200,
+    true,
+    teachers,
+    null,
+    "sucessfully asign teacher"
+  );
+});
+
 courseController.getEnrollment = catchAsync(async (req, res, next) => {
   const courseId = req.params.id;
   const userId = req.userId;
@@ -182,7 +221,5 @@ courseController.getEnrollment = catchAsync(async (req, res, next) => {
     "Get enrollment successful"
   );
 });
-
-
 
 module.exports = courseController;

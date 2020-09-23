@@ -12,9 +12,8 @@ const enrollmentSchema = Schema(
       enum: ["enroll", "graduated", "fail"],
     },
   },
-  { timestamps: true }
+  { timestamps: true, toObject: { virtuals: true }, toJSON: { virtuals: true } }
 );
-
 enrollmentSchema.statics.caculateEnrollment = async function (
   userId,
   courseId
@@ -37,16 +36,6 @@ enrollmentSchema.statics.caculateEnrollment = async function (
 enrollmentSchema.post("save", function () {
   this.constructor.caculateEnrollment(this.student, this.course);
 });
-
-// enrollmentSchema.pre(/^findOneAnd/, async function (next) {
-//   this.doc = await this.findOne();
-//   next();
-// });
-
-// enrollmentSchema.post(/^findOneAnd/, async function (next) {
-//   await this.doc.constructor.caculateEnrollment(this.doc.student);
-//   await this.doc.constructor.caculateEnrollment(this.doc.course);
-// });
 
 const Enrollment = mongoose.model("Enrollment", enrollmentSchema);
 module.exports = Enrollment;

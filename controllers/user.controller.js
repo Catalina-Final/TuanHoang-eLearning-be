@@ -71,4 +71,23 @@ userController.getEnrollCourses = catchAsync(async (req, res, next) => {
   }).populate("course");
   return sendResponse(res, 200, true, courses, null, null);
 });
+
+userController.getAllUsers = catchAsync(async (req, res, next) => {
+  let { page, limit, sortBy, ...filter } = { ...req.query };
+  page = parseInt(page) || 1;
+  limit = parseInt(limit) || 100;
+
+  const totalUsers = await User.countDocuments({
+    ...filter,
+  });
+  const totalPages = Math.ceil(totalUsers / limit);
+  const offset = limit * (page - 1);
+  const users = await User.find(filter)
+    .sort({ ...sortBy, createdAt: -1 })
+    .skip(offset)
+    .limit(limit)
+    .populate("author");
+  return sendResponse(res, 200, true, { users, totalPages }, null, "");
+});
+
 module.exports = userController;
