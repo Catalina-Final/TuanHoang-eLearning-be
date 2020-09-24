@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 const faker = require("faker");
 const Student = require("../models/student");
-
 const Teacher = require("../models/teacher");
 const User = require("../models/user");
+
 /**
  * Returns a random integer between min (inclusive) and max (inclusive).
  * The value is no lower than min (or the next integer greater than min
@@ -56,6 +56,13 @@ const generateData = async () => {
       } else {
         await Teacher.create({ user: users[i]._id }).then(function (teacher) {
           console.log("Created new teacher:" + teacher.user);
+          User.findByIdAndUpdate(
+            { _id: users[i]._id },
+            { role: "teacher" }
+          ).then(function (user) {
+            console.log("Update role to teacher:" + teacher.user);
+            users.push(user);
+          });
           teachers.push(teacher);
         });
       }
@@ -67,4 +74,4 @@ const generateData = async () => {
 const main = async (resetDB = false) => {
   if (resetDB) await generateData();
 };
-main(false);
+main(true);

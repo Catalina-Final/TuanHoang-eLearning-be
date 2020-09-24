@@ -6,7 +6,7 @@ const {
 const Course = require("../src/models/course");
 const Enrollment = require("../src/models/enrollment");
 const Teaching = require("../src/models/teaching");
-
+const User = require("../src/models/user");
 const courseController = {};
 
 //Create
@@ -52,6 +52,7 @@ courseController.getAllCourses = catchAsync(async (req, res, next) => {
     .skip(offset)
     .limit(limit)
     .populate("teachers");
+
   return sendResponse(res, 200, true, { courses, totalPages }, null, "");
 });
 
@@ -75,7 +76,14 @@ courseController.getSingleCourse = catchAsync(async (req, res, next) => {
     );
   course = course.toJSON();
 
-  return sendResponse(res, 200, true, { course, teachers }, null, null);
+  return sendResponse(
+    res,
+    200,
+    true,
+    { course: { ...course, teacherss: teachers } },
+    null,
+    null
+  );
 });
 
 //Update single
@@ -84,11 +92,11 @@ courseController.updateSingleCourse = catchAsync(async (req, res, next) => {
   // const author = req.userId;
 
   const courseId = req.params.id;
-  const { title, description, image } = req.body;
+  const { title, description, price, image } = req.body;
 
   const course = await Course.findOneAndUpdate(
     { _id: courseId },
-    { title, description, image },
+    { title, description, price, image },
     { new: true }
   );
   if (!course)
@@ -177,14 +185,17 @@ courseController.assignTeacher = catchAsync(async (req, res, next) => {
     course: courseId,
   });
 
+  const user = await User.findById(teacherId);
+
+  if (!user) return next(new AppError(404, "teacher not found"));
+
   if (!teaching) {
     teaching = await Teaching.create({
-      teacher: teacherId,
+      teacherName: user.name,
+      teacher: user._id,
       course: courseId,
       status: "asigned",
     });
-  } else {
-    teaching.status = teaching.status === "asigned" ? "unasigned" : "asigned";
     await teaching.save();
   }
   const teachers = await Teaching.find({ course: courseId }).populate(
@@ -198,6 +209,14 @@ courseController.assignTeacher = catchAsync(async (req, res, next) => {
     null,
     "sucessfully asign teacher"
   );
+});
+
+courseController.unassignTeacher = catchAsync(async (req, res, next) => {
+  const { teachingId } = req.params;
+  console.log("saasd", teachingId);
+  await Teaching.findByIdAndDelete(teachingId);
+
+  return sendResponse(res, 200, true, null, null, "Unassign teacher sucess");
 });
 
 courseController.getEnrollment = catchAsync(async (req, res, next) => {

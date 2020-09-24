@@ -49,7 +49,7 @@ router.put(
     param("id").exists().isString().custom(validators.checkObjectId),
     body("title", "Missing title").exists().notEmpty(),
     body("description", "Missing description").exists().notEmpty(),
-    body("image", "Missing image").exists().notEmpty(),
+    // body("image", "Missing image").exists().notEmpty(),
   ]),
   courseController.updateSingleCourse
 );
@@ -75,11 +75,26 @@ router.post(
 router.post(
   "/:courseId/teacher/:teacherId",
   authMiddleware.loginRequired,
+  authMiddleware.isAdmin,
   validators.validate([
     param("courseId").exists().isString().custom(validators.checkObjectId),
     param("teacherId").exists().isString().custom(validators.checkObjectId),
   ]),
   courseController.assignTeacher
+);
+/**
+ * @route DELETE /:courseId/teacher/:teacherId
+ * @description user enroll a course as a student
+ * @access Login required
+ */
+router.delete(
+  "/teaching/unassign/:teachingId",
+  authMiddleware.loginRequired,
+  authMiddleware.isAdmin,
+  validators.validate([
+    param("teachingId").exists().isString().custom(validators.checkObjectId),
+  ]),
+  courseController.unassignTeacher
 );
 
 /**
@@ -95,7 +110,7 @@ router.get(
   ]),
   courseController.getEnrollment
 );
-
+// unassignTeacher;
 /**
  * @route DELETE api/course/:id
  * @description Delete a course

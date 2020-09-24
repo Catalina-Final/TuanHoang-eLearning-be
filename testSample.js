@@ -35,4 +35,4 @@ const generateData = async () => {
 const main = async (resetDB = false) => {
   if (resetDB) await generateData();
 };
-main(false);
+main(true);

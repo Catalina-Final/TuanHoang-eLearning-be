@@ -17,16 +17,20 @@ const userSchema = Schema(
     },
     isDeleted: { type: Boolean, default: false },
     // emailVerified: { type: Boolean, default: true },
-    enrollmentCount: {type:Number, default: 0},
+    enrollmentCount: { type: Number, default: 0 },
   },
   { timestamps: true }
 );
 userSchema.plugin(require("./plugins/isDeletedFalse"));
 
 userSchema.methods.generateToken = async function () {
-  const accessToken = await jwtkey.sign({ _id: this._id }, JWT_SECRET_KEY, {
-    expiresIn: "1d",
-  });
+  const accessToken = await jwtkey.sign(
+    { _id: this._id, role: this.role },
+    JWT_SECRET_KEY,
+    {
+      expiresIn: "1d",
+    }
+  );
   return accessToken;
 };
 

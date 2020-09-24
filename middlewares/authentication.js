@@ -22,10 +22,19 @@ authMiddleware.loginRequired = (req, res, next) => {
       }
       // console.log(payload);
       req.userId = payload._id;
+      req.userRole = payload.role;
     });
     next();
   } catch (error) {
     next(error);
+  }
+};
+
+authMiddleware.isAdmin = (req, res, next) => {
+  if (req.userRole === "admin") {
+    next();
+  } else {
+    return next(new AppError(401, "Role Admin required", "Validation Error"));
   }
 };
 
