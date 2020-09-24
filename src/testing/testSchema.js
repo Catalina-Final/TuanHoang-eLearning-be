@@ -3,6 +3,7 @@ const faker = require("faker");
 const Student = require("../models/student");
 const Teacher = require("../models/teacher");
 const User = require("../models/user");
+const Enrollment = require("../models/enrollment");
 
 /**
  * Returns a random integer between min (inclusive) and max (inclusive).
@@ -30,14 +31,14 @@ const generateData = async () => {
   try {
     await cleanData();
     let users = [];
-    const userNum = 15;
+    const userNum = 20;
     let students = [];
     const studentNum = 10;
     let teachers = [];
     const teacherNum = 5;
-    console.log("| Create 15 users:");
-    console.log("| Create 10 students");
-    console.log("| Create 5 teachers");
+    console.log("| Create 30 users:");
+    console.log("| Create 20 students");
+    console.log("| Create 10 teachers");
     for (let i = 0; i < userNum; i++) {
       await User.create({
         name: faker.name.findName(),
@@ -72,6 +73,11 @@ const generateData = async () => {
   }
 };
 const main = async (resetDB = false) => {
-  if (resetDB) await generateData();
+  // if (resetDB) await generateData();
+  const enrollment = await Enrollment.findOne({
+    student: "5f6c8ba8f2bd840f700d48fe",
+    course: "5f6c8b88d00c582124561033",
+  });
+  console.log(enrollment);
 };
 main(true);

@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const User = require("./user");
 const Course = require("./course");
+const isDeletedFalse = require("./plugins/isDeletedFalse");
 const Schema = mongoose.Schema;
 
 const enrollmentSchema = Schema(
@@ -14,6 +15,7 @@ const enrollmentSchema = Schema(
   },
   { timestamps: true, toObject: { virtuals: true }, toJSON: { virtuals: true } }
 );
+
 enrollmentSchema.statics.caculateEnrollment = async function (
   userId,
   courseId

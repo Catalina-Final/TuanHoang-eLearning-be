@@ -8,7 +8,6 @@ const teachingSchema = Schema(
     teacher: { type: Schema.ObjectId, required: true, ref: "User" },
     teacherName: { type: String, required: true },
     course: { type: Schema.ObjectId, required: true, ref: "Course" },
-    isDeleted: { type: Boolean, default: false },
   },
   { timestamps: true, toObject: { virtuals: true }, toJSON: { virtuals: true } }
 );

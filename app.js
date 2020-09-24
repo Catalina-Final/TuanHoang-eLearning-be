@@ -32,7 +32,7 @@ mongoose
   })
   .then(() => {
     console.log(`Mongoose connected to ${mongoURI}`);
-    // require("./src/testing/testSchema");
+    require("./src/testing/testSchema");
     // require("./testSample");
   })
   .catch((err) => console.log(err));

@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const {
   AppError,
   catchAsync,
@@ -140,8 +141,8 @@ courseController.enrollCourse = catchAsync(async (req, res, next) => {
   const courseId = req.params.id;
   const userId = req.userId;
   let enrollment = await Enrollment.findOne({
-    student: userId,
-    course: courseId,
+    student: mongoose.Types.ObjectId(userId),
+    course: mongoose.Types.ObjectId(courseId),
   });
   if (!enrollment) {
     enrollment = await Enrollment.create({
@@ -228,6 +229,7 @@ courseController.getEnrollment = catchAsync(async (req, res, next) => {
     course: courseId,
   });
   // Enrollment.findOneAndUpdate({ student: userId, course: courseId });
+  console.log({ enrollment, userId, courseId });
 
   if (!enrollment)
     return sendResponse(res, 200, true, null, null, "Enrollment not found");
